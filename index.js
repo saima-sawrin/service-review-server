@@ -38,7 +38,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
 try {
 const serviceCollection = client.db('beautySalon').collection('Services');
-// const orderCollection = client.db('geniusCar').collection('orders');
+const reviewCollection = client.db('beautySalon').collection('reviews');
 
 // app.post('/jwt', (req, res) =>{
 // const user = req.body;
@@ -59,6 +59,12 @@ const services = await cursor.toArray();
 res.send(services);
 });
 
+app.post('/allServices', async (req, res) => {
+const Service = req.body;
+const result = await serviceCollection.insertOne(Service);
+res.send(result);
+});
+
 app.get('/allServices/:id', async (req, res) => {
 const id = req.params.id;
 const query = { _id: ObjectId(id) };
@@ -68,8 +74,8 @@ res.send(service);
 });
 
 
-// orders api
-// app.get('/orders', verifyJWT, async (req, res) => {
+// Review api
+// app.get('/reviews', verifyJWT, async (req, res) => {
 // const decoded = req.decoded;
 
 // if(decoded.email !== req.query.email){
@@ -82,18 +88,18 @@ res.send(service);
 // email: req.query.email
 // }
 // }
-// const cursor = orderCollection.find(query);
-// const orders = await cursor.toArray();
-// res.send(orders);
+// const cursor = reviewCollection.find(query);
+// const reviews = await cursor.toArray();
+// res.send(reviews);
 // });
 
-// app.post('/orders', verifyJWT, async (req, res) => {
-// const order = req.body;
-// const result = await orderCollection.insertOne(order);
+// app.post('/reviews', verifyJWT, async (req, res) => {
+// const review = req.body;
+// const result = await reviewCollection.insertOne(review);
 // res.send(result);
 // });
 
-// app.patch('/orders/:id', verifyJWT, async (req, res) => {
+// app.patch('/reviews/:id', verifyJWT, async (req, res) => {
 // const id = req.params.id;
 // const status = req.body.status
 // const query = { _id: ObjectId(id) }
@@ -102,14 +108,14 @@ res.send(service);
 // status: status
 // }
 // }
-// const result = await orderCollection.updateOne(query, updatedDoc);
+// const result = await reviewCollection.updateOne(query, updatedDoc);
 // res.send(result);
 // })
 
-// app.delete('/orders/:id', verifyJWT, async (req, res) => {
+// app.delete('/reviews/:id', verifyJWT, async (req, res) => {
 // const id = req.params.id;
 // const query = { _id: ObjectId(id) };
-// const result = await orderCollection.deleteOne(query);
+// const result = await reviewCollection.deleteOne(query);
 // res.send(result);
 // })
 
