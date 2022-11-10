@@ -75,6 +75,21 @@ res.send(service);
 
 
 // Review api
+
+app.get('/reviews', async (req, res) => {
+    const query = {}
+    const cursor = reviewCollection.find(query);
+    const review= await cursor.toArray();
+    res.send(review);
+    });
+    
+    app.post('/reviews', async (req, res) => {
+    const review = req.body;
+    const result = await reviewCollection.insertOne(review);
+    res.send(result);
+    });
+
+
 // app.get('/reviews', verifyJWT, async (req, res) => {
 // const decoded = req.decoded;
 
